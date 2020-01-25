@@ -2,3 +2,5 @@
 .idea
 
 src/data
+
+src/__pycache__/
