@@ -63,8 +63,8 @@ class SelectiveSearchDataset(Dataset):
                 positive_csv_path = os.path.join(positive_dir, csv_name)
                 negative_csv_path = os.path.join(negative_dir, csv_name)
 
-                positive_data_array = np.loadtxt(positive_csv_path, delimiter=' ', dtype=np.uint8)
-                negative_data_array = np.loadtxt(negative_csv_path, delimiter=' ', dtype=np.uint8)
+                positive_data_array = np.loadtxt(positive_csv_path, delimiter=' ').astype(np.int)
+                negative_data_array = np.loadtxt(negative_csv_path, delimiter=' ').astype(np.int)
 
                 res_samples, res_targets = self._parse_data(positive_data_array, origin_img, cate, origin_img_path,
                                                             is_positive=True)
@@ -79,47 +79,22 @@ class SelectiveSearchDataset(Dataset):
         return np.array(positive_samples), np.array(positive_targets), \
                np.array(negative_samples), np.array(negative_targets)
 
-    def _parse_data(self, data_array, origin_img, cate, origin_img_path, is_positive=True, ):
+    def _parse_data(self, data_array, origin_img, cate, origin_img_path, is_positive=True):
         samples = list()
         targets = list()
 
+        # 防止出现小于0的坐标
+        data_array[data_array < 0] = 0
         if len(data_array.shape) == 1:
             xmin, ymin, xmax, ymax = data_array
+            img = origin_img[ymin:ymax, xmin:xmax]
             samples.append(origin_img[ymin:ymax, xmin:xmax])
             targets.append({'cate': cate, 'bndbox': [xmin, ymin, xmax, ymax], 'positive': is_positive,
                             'img_path': origin_img_path})
         else:
             for xmin, ymin, xmax, ymax in data_array:
+                img = origin_img[ymin:ymax, xmin:xmax]
                 samples.append(origin_img[ymin:ymax, xmin:xmax])
                 targets.append({'cate': cate, 'bndbox': [xmin, ymin, xmax, ymax], 'positive': is_positive,
                                 'img_path': origin_img_path})
         return samples, targets
-
-    def _load_csv(self, root_dir):
-        # 正样本边界框
-        positive_array = list()
-        # 负样本边界框
-        negative_array = list()
-        # 样本所属类别
-        cate_list = os.listdir(root_dir)
-        # 样本所属图像
-        img_name_list = list()
-
-        for cate in cate_list:
-            cate_dir = os.path.join(root_dir, cate)
-            positive_dir = os.path.join(cate_dir, 'positive')
-            negative_dir = os.path.join(cate_dir, 'negative')
-
-            # 每个类别中的正负样本目录下的csv文件名相同
-            csv_list = os.listdir(positive_dir)
-            for csv_name in csv_list:
-                # 保存边界框所在的图像名
-                img_name_list.append(csv_name.split('.')[0])
-
-                positive_csv_path = os.path.join(positive_dir, csv_name)
-                negative_csv_path = os.path.join(negative_dir, csv_name)
-
-                positive_array.append(positive_csv_path)
-                negative_array.append(negative_csv_path)
-
-        return np.array(cate_list), np.array(img_name_list), np.array(positive_array), np.array(negative_array)
