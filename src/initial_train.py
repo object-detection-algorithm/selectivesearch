@@ -55,10 +55,11 @@ if __name__ == '__main__':
     net = LeNet5(input_channel=3, num_classes=num_classes).to(device)
     print(net)
     criterion = nn.CrossEntropyLoss().to(device)
-    optimer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9, nesterov=True)
+    # optimer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9, nesterov=True)
+    optimer = optim.Adam(net.parameters(), lr=1e-3)
 
     logging.info("开始训练")
-    epoches = 5
+    epoches = 100
     for i in range(epoches):
         num = 0
         total_loss = 0
@@ -77,8 +78,9 @@ if __name__ == '__main__':
             num += 1
         avg_loss = total_loss / num
         logging.info('epoch: %d loss: %.6f' % (i + 1, total_loss / num))
-    # 保存模型
-    torch.save(net.state_dict(), './model/lenet5.pth')
+        # 保存模型
+        if (i + 1) % 10 == 0:
+            torch.save(net.state_dict(), './model/lenet5-%d.pth' % (i + 1))
     # train_accuracy = compute_accuracy(train_dataloader, net, device)
     # test_accuracy = compute_accuracy(test_dataloader, net, device)
     # logging.info('train accuracy: %f test accuracy: %f' % (train_accuracy, test_accuracy))
