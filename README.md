@@ -2,9 +2,9 @@
 
 [![Documentation Status](https://readthedocs.org/projects/selectivesearch/badge/?version=latest)](https://selectivesearch.readthedocs.io/zh_CN/latest/?badge=latest) [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-> 基于selectivesearch的目标检测/识别算法实现
+> selectivesearch算法实现
 
-学习论文[Selective Search for Object Recognition](http://xueshu.baidu.com/usercenter/paper/show?paperid=b689fcf3ed998dfbb4213687367b6175&site=xueshu_se)，实现目标检测/识别
+学习论文[Selective Search for Object Recognition](http://xueshu.baidu.com/usercenter/paper/show?paperid=b689fcf3ed998dfbb4213687367b6175&site=xueshu_se)以及`OpenCV`实现
 
 ## 内容列表
 
@@ -17,7 +17,7 @@
 
 ## 背景
 
-`selectivesearch`（选择性搜索）是`R-CNN`使用的候选区域检测算法，其使用基于图的分割算法进行候选区域的生成。在`selectivesearch`论文中利用`selectivesearch + SVM + 直方图交叉核`进行目标检测/识别，当前使用`selectivesearch + LeNet-5 + Softmax`实现
+`selectivesearch`（选择性搜索）是`R-CNN`使用的候选区域检测算法，其使用基于图的分割算法，并通过不同的颜色空间组合+多样化特征提取+分组分层合并算法生成候选区域
 
 ## 安装
 
