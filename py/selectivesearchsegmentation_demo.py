@@ -16,7 +16,7 @@ import cv2 as cv
 import sys
 
 if __name__ == '__main__':
-    img_path = '../../imgs/beach.png'
+    img_path = '../imgs/beach.png'
     img = cv.imread(img_path, cv.IMREAD_COLOR)
     # img = cv.imread(sys.argv[1])
 
