@@ -2,7 +2,7 @@
 // Created by zj on 2020/2/12.
 //
 
-#ifndef CPLUPLUS_GRAPHSEGMENTATION_DEMO_H
+#ifndef CPLUPLUS_GRAPHSEGMENTATION_H
 #define CPLUPLUS_GRAPHSEGMENTATION_DEMO_H
 
 
@@ -48,4 +48,4 @@ namespace segmentation {
     std::shared_ptr<GraphSegmentation> createGraphSegmentation(double sigma = 0.5, float k = 300, int min_size = 100);
 }
 
-#endif //CPLUPLUS_GRAPHSEGMENTATION_DEMO_H
+#endif //CPLUPLUS_GRAPHSEGMENTATION_H

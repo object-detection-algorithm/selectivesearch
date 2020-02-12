@@ -6,7 +6,7 @@
 #define CPLUPLUS_GRAPHSEGMENTATIONIMPL_H
 
 #include "point_set.h"
-#include "graphsegmentation_demo.h"
+#include "graphsegmentation.h"
 #include "opencv2/opencv.hpp"
 #include <iostream>
 #include <memory>
