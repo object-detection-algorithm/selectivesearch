@@ -24,8 +24,6 @@ namespace segmentation {
             name_ = "GraphSegmentation";
         }
 
-//        ~GraphSegmentationImpl() override {};
-
         virtual void processImage(InputArray src, OutputArray dst) override;
 
         virtual void setSigma(double sigma_) override {
@@ -43,20 +41,20 @@ namespace segmentation {
 
         virtual int getMinSize() override { return min_size; }
 
-        virtual void write(FileStorage &fs) const override {
-            fs << "name" << name_
-               << "sigma" << sigma
-               << "k" << k
-               << "min_size" << (int) min_size;
-        }
-
-        virtual void read(const FileNode &fn) override {
-            CV_Assert((String) fn["name"] == name_);
-
-            sigma = (double) fn["sigma"];
-            k = (float) fn["k"];
-            min_size = (int) (int) fn["min_size"];
-        }
+//        virtual void write(FileStorage &fs) const override {
+//            fs << "name" << name_
+//               << "sigma" << sigma
+//               << "k" << k
+//               << "min_size" << (int) min_size;
+//        }
+//
+//        virtual void read(const FileNode &fn) override {
+//            CV_Assert((String) fn["name"] == name_);
+//
+//            sigma = (double) fn["sigma"];
+//            k = (float) fn["k"];
+//            min_size = (int) (int) fn["min_size"];
+//        }
 
     private:
         double sigma;
