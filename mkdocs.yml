@@ -30,4 +30,5 @@ extra_javascript:
 # 导航
 nav:
     - Home: index.md
-    - '数据集制作': '数据集制作.md'
+    - 图分割:
+        - '源码解析': './源码解析-图分割.md'
