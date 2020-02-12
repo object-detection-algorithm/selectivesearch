@@ -6,7 +6,7 @@
 #define CPLUPLUS_GRAPHSEGMENTATIONIMPL_H
 
 #include "point_set.h"
-#include "graphsegmentation.h"
+#include "graphsegmentation_demo.h"
 #include "opencv2/opencv.hpp"
 #include <iostream>
 #include <memory>
@@ -24,7 +24,7 @@ namespace segmentation {
             name_ = "GraphSegmentation";
         }
 
-        ~GraphSegmentationImpl() override {};
+//        ~GraphSegmentationImpl() override {};
 
         virtual void processImage(InputArray src, OutputArray dst) override;
 

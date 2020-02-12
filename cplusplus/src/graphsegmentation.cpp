@@ -42,7 +42,7 @@ the use of this software, even if advised of the possibility of such damage.
 * Author: Maximilien Cuony / LTS2 / EPFL / 2015                               *
 *******************************************************************************/
 
-#include "precomp.hpp"
+//#include "precomp.hpp"
 #include "../include/segmentation.h"
 #include "../include/graphsegmentationimpl.h"
 

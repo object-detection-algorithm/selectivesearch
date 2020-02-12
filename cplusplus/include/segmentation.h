@@ -5,6 +5,6 @@
 #ifndef CPLUPLUS_SEGMENTATION_H
 #define CPLUPLUS_SEGMENTATION_H
 
-#include "graphsegmentation.h"
+#include "graphsegmentation_demo.h"
 
 #endif //CPLUPLUS_SEGMENTATION_H

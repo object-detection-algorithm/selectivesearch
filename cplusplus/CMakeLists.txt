@@ -13,7 +13,9 @@ MESSAGE("OpenCV version: ${OpenCV_VERSION}")
 MESSAGE("OpenCV OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
 MESSAGE("OpenCV OpenCV_LIBS: ${OpenCV_LIBS}")
 
-add_executable(cpluplus samples/selectivesearchsegmentation_demo.cpp samples/selectivesearchsegmentation.cpp include/segmentation.h include/graphsegmentation.h include/graphsegmentationimpl.h
-        include/edge.h include/point_set_element.h include/point_set.h
-        src/graphsegmentationimpl.cpp src/point_set.cpp src/graphsegmentation.cpp)
+add_executable(cpluplus samples/opencv/graphsegmentation_demo.cpp)
+
+#add_executable(cpluplus include/segmentation.h include/graphsegmentation_demo.h include/graphsegmentationimpl.h
+#        include/edge.h include/point_set_element.h include/point_set.h
+#        src/graphsegmentationimpl.cpp src/point_set.cpp src/graphsegmentation.cpp samples/opencv/graphsegmentation_demo.cpp)
 target_link_libraries(cpluplus ${OpenCV_LIBS})

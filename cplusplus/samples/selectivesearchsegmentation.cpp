@@ -29,7 +29,6 @@ or tort (including negligence or otherwise) arising in any way out of
 the use of this software, even if advised of the possibility of such damage.
 */
 
-
 #include "opencv2/ximgproc/segmentation.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
