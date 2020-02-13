@@ -30,5 +30,5 @@ extra_javascript:
 # 导航
 nav:
     - Home: index.md
-    - 图分割:
+    - 图分割算法:
         - '源码解析': './源码解析-图分割.md'
