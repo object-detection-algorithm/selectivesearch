@@ -4,7 +4,9 @@
 
 > selectivesearch算法实现
 
-学习论文[Selective Search for Object Recognition](http://xueshu.baidu.com/usercenter/paper/show?paperid=b689fcf3ed998dfbb4213687367b6175&site=xueshu_se)以及`OpenCV`实现
+`OpenCV`实现了论文[Selective Search for Object Recognition](http://xueshu.baidu.com/usercenter/paper/show?paperid=b689fcf3ed998dfbb4213687367b6175&site=xueshu_se)提供的选择性搜索算法。当前仓库将整个工程进行重构，以便进一步的学习和使用
+
+*当前使用`OpenCV 4.2.0`*
 
 ## 内容列表
 
@@ -17,7 +19,7 @@
 
 ## 背景
 
-`selectivesearch`（选择性搜索）是`R-CNN`使用的候选区域检测算法，其使用基于图的分割算法，并通过不同的颜色空间组合+多样化特征提取+分组分层合并算法生成候选区域
+选择性搜索算法是`R-CNN`算法的一部分。仓库[ AlpacaDB /selectivesearch](https://github.com/AlpacaDB/selectivesearch)实现了`python`版本；同时`OpenCV`也提供了选择性搜索算法的`C++`源码，不过里面封装的比较好，其源文件中包含了多个类定义和函数实现。为了更方便的学习选择性搜索算法，我将其实现进行了重构
 
 ## 安装
 
@@ -33,7 +35,7 @@ $ pip install mkdocs
 
 有两种使用方式
 
-1. 在线浏览文档：[selectivesearch](https://github.com/zjZSTU/selectivesearch.git)
+1. 在线浏览文档：[selectivesearch](https://selectivesearch.readthedocs.io/zh_CN/latest/?badge=latest)
 
 2. 本地浏览文档，实现如下：
 
