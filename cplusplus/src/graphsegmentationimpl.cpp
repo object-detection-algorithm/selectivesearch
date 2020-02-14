@@ -44,7 +44,7 @@ namespace segmentation {
                             const float *p2 = img_filtered.ptr<float>(i2);
 
                             float tmp_total = 0;
-
+//                            计算两点之间的L2距离作为边权重
                             for (int channel = 0; channel < nb_channels; channel++) {
                                 tmp_total += pow(p[j * nb_channels + channel] - p2[j2 * nb_channels + channel],
                                                  2);
@@ -71,28 +71,35 @@ namespace segmentation {
         int total_points = (int) (img_filtered.rows * img_filtered.cols);
 
         // Sort edges
+        // 从大到小排序
         std::sort(edges, edges + nb_edges);
 
         // Create a set with all point (by default mapped to themselves)
         *es = new PointSet(img_filtered.cols * img_filtered.rows);
 
         // Thresholds
+        // 阈值函数，初始分量的像素点个数为1，所以其大小等于k
         float *thresholds = new float[total_points];
 
         for (int i = 0; i < total_points; i++)
             thresholds[i] = k;
 
+        // 遍历所有边，
         for (int i = 0; i < nb_edges; i++) {
 
+            // 通过并查集查询分根结点
             int p_a = (*es)->getBasePoint(edges[i].from);
             int p_b = (*es)->getBasePoint(edges[i].to);
 
+            // 是否属于同一分量
             if (p_a != p_b) {
+                // 成对区域比较谓词实现
                 if (edges[i].weight <= thresholds[p_a] && edges[i].weight <= thresholds[p_b]) {
                     (*es)->joinPoints(p_a, p_b);
                     p_a = (*es)->getBasePoint(p_a);
+                    // 新加入的边权重一定是所在分量的最大边权重
                     thresholds[p_a] = edges[i].weight + k / (*es)->size(p_a);
-
+                    // 防止重复边操作
                     edges[i].weight = 0;
                 }
             }
@@ -109,7 +116,7 @@ namespace segmentation {
 
                 int p_a = es->getBasePoint(edges[i].from);
                 int p_b = es->getBasePoint(edges[i].to);
-
+                // 合并小分量
                 if (p_a != p_b && (es->size(p_a) < min_size || es->size(p_b) < min_size)) {
                     es->joinPoints(p_a, p_b);
 
@@ -124,6 +131,7 @@ namespace segmentation {
         int maximum_size = (int) (output.rows * output.cols);
 
         int last_id = 0;
+        // 属于同一分量的像素点设置为相同id
         int *mapped_id = new int[maximum_size];
 
         for (int i = 0; i < maximum_size; i++)

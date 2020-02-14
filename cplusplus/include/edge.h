@@ -14,6 +14,7 @@ namespace segmentation {
         int to;
         float weight;
 
+        // 重写比较函数，按权值进行排序
         bool operator<(const Edge &e) const {
             return weight < e.weight;
         }
