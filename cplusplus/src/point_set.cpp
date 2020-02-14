@@ -2,7 +2,7 @@
 // Created by zj on 2020/2/12.
 //
 
-#include "../include/point_set.h"
+#include "../include/graphsegment/point_set.h"
 #include <map>
 
 namespace segmentation {

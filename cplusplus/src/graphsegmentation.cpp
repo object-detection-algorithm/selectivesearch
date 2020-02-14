@@ -43,7 +43,7 @@ the use of this software, even if advised of the possibility of such damage.
 *******************************************************************************/
 
 //#include "precomp.hpp"
-#include "../include/graphsegmentationimpl.h"
+#include "../include/graphsegment/graphsegmentationimpl.h"
 
 #include <iostream>
 

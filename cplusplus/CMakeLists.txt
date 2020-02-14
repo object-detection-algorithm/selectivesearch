@@ -13,9 +13,12 @@ MESSAGE("OpenCV version: ${OpenCV_VERSION}")
 MESSAGE("OpenCV OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
 MESSAGE("OpenCV OpenCV_LIBS: ${OpenCV_LIBS}")
 
+#图分割算法
 add_executable(cpluplus samples/graphsegmentation_custom.cpp
-        include/segmentation.h include/graphsegmentation.h include/graphsegmentationimpl.h
-        include/edge.h include/point_set_element.h include/point_set.h
+        include/segmentation.h
+        include/graphsegment/graphsegmentation.h include/graphsegment/graphsegmentationimpl.h
+        include/graphsegment/edge.h include/graphsegment/point_set_element.h include/graphsegment/point_set.h
         src/graphsegmentation.cpp src/graphsegmentationimpl.cpp src/point_set.cpp
         )
+#add_executable(cpluplus samples/selectivesearchsegmentation_custom.cpp)
 target_link_libraries(cpluplus ${OpenCV_LIBS})

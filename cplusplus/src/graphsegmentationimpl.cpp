@@ -3,7 +3,7 @@
 //
 
 
-#include "../include/graphsegmentationimpl.h"
+#include "../include/graphsegment/graphsegmentationimpl.h"
 #include <iostream>
 
 
