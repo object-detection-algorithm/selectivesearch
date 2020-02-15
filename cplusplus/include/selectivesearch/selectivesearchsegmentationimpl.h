@@ -9,7 +9,7 @@
 #include "region.h"
 
 namespace segmentation {
-    class SelectiveSearchSegmentationImpl CV_FINAL : public SelectiveSearchSegmentation {
+    class SelectiveSearchSegmentationImpl final : public SelectiveSearchSegmentation {
     public:
         SelectiveSearchSegmentationImpl() {
             name_ = "SelectiveSearchSegmentation";

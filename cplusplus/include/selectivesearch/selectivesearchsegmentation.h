@@ -71,7 +71,7 @@ namespace segmentation {
         /** @brief Based on all images, graph segmentations and stragies, computes all possible rects and return them
             @param rects The list of rects. The first ones are more relevents than the lasts ones.
         */
-        virtual void process(CV_OUT std::vector<cv::Rect> &rects) = 0;
+        virtual void process(std::vector<cv::Rect> &rects) = 0;
     };
 
     /** @brief Create a new SelectiveSearchSegmentation class.
