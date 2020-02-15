@@ -29,7 +29,7 @@ or tort (including negligence or otherwise) arising in any way out of
 the use of this software, even if advised of the possibility of such damage.
 */
 
-#include "opencv2/ximgproc/segmentation.hpp"
+#include "../include/segmentation.h"
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
@@ -38,7 +38,7 @@ the use of this software, even if advised of the possibility of such damage.
 #include <ctime>
 
 using namespace cv;
-using namespace cv::ximgproc::segmentation;
+using namespace segmentation;
 
 static void help() {
     std::cout << std::endl <<
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     Mat img = imread(img_path, cv::IMREAD_COLOR);
 //    Mat img = imread(argv[1]);
 
-    Ptr<SelectiveSearchSegmentation> gs = createSelectiveSearchSegmentation();
+    std::shared_ptr<SelectiveSearchSegmentation> gs = createSelectiveSearchSegmentation();
     gs->setBaseImage(img);
 
     char switch_item = 'q';

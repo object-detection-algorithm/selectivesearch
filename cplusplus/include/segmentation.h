@@ -6,5 +6,6 @@
 #define CPLUPLUS_SEGMENTATION_H
 
 #include "graphsegment/graphsegmentation.h"
+#include "selectivesearch/selectivesearchsegmentation.h"
 
 #endif //CPLUPLUS_SEGMENTATION_H
