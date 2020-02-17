@@ -1,0 +1,78 @@
+@startuml
+skinparam classAttributeIconSize 0
+scale 1.5
+title 图分割算法
+
+' 泛化
+GraphSegmentation <|-- GraphSegmentationImpl
+' 依赖
+PointSet <.. GraphSegmentationImpl
+Edge <.. GraphSegmentationImpl
+' 聚合
+PointSetElement o-- PointSet
+
+class GraphSegmentation {
+    ' 方法
+    + processImage(cv::InputArray src, cv::OutputArray dst): void
+    +setSigma(double sigma): void
+    + getSigma() double
+    + setK(float k) void
+    + getK() float
+    + setMinSize(int min_size): void
+    + getMinSize(): int
+}
+
+class GraphSegmentationImpl {
+    ' 属性
+      - sigma: double
+      - k: float
+      - min_size: int
+      - name_: string
+    ' 方法
+    + GraphSegmentationImpl()
+
+    + processImage(cv::InputArray src, cv::OutputArray dst): void
+    +setSigma(double sigma): void
+    + getSigma() double
+    + setK(float k) void
+    + getK() float
+    + setMinSize(int min_size): void
+    + getMinSize(): int
+
+    - filter(const Mat &img, Mat &img_filtered): void
+    - buildGraph(Edge **edges, int &nb_edges, const Mat &img_filtered): void
+    - segmentGraph(Edge *edges, const int &nb_edges, const Mat &img_filtered, PointSet **es): void
+    - filterSmallAreas(Edge *edges, const int &nb_edges, PointSet *es): void
+    - finalMapping(PointSet *es, Mat &output): void
+}
+
+class Edge {
+    ' 属性
+    + from: int
+    + to: int
+    + weight: float
+    ' 方法
+    + operator<(const Edge &e): bool
+}
+
+class PointSet {
+    ' 属性
+    + nb_elements: int
+    ' 方法
+    + PointSet(int nb_elements_)
+    + ~PointSet()
+
+    + getBasePoint(int p): int
+    + joinPoints(int p_a, int p_b): int
+    + size(unsigned int p): int
+}
+
+class PointSetElement {
+    ' 属性
+    + p: int
+    + size: int
+    ' 方法
+    + PointSetElement()
+    + PointSetElement(int p_)
+}
+@enduml
