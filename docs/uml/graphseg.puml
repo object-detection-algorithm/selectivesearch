@@ -1,76 +1,78 @@
 @startuml
 skinparam classAttributeIconSize 0
-scale 1.5
+scale 4096 width
 title 图分割算法
 
 ' 泛化
-GraphSegmentation <|-- GraphSegmentationImpl
+segmentation.GraphSegmentation <|-- segmentation.GraphSegmentationImpl
 ' 依赖
-PointSet <.. GraphSegmentationImpl
-Edge <.. GraphSegmentationImpl
+segmentation.PointSet <.. segmentation.GraphSegmentationImpl
+segmentation.Edge <.. segmentation.GraphSegmentationImpl
 ' 聚合
-PointSetElement o-- PointSet
+segmentation.PointSetElement o-- segmentation.PointSet
 
-class GraphSegmentation {
+class segmentation.GraphSegmentation {
     ' 方法
-    + processImage(cv::InputArray src, cv::OutputArray dst): void
-    +setSigma(double sigma): void
-    + getSigma() double
-    + setK(float k) void
-    + getK() float
-    + setMinSize(int min_size): void
-    + getMinSize(): int
+    + virtual void processImage(cv::InputArray src, cv::OutputArray dst) = 0
+    .. Setter ..
+    +virtual void setSigma(double sigma) = 0
+    + virtual void setK(float k) = 0
+    + virtual void setMinSize(int min_size) = 0
+    .. Getter ..
+    + virtual double getSigma() = 0
+    + virtual float getK() = 0
+    + virtual int getMinSize() = 0
 }
 
-class GraphSegmentationImpl {
-    ' 属性
-      - sigma: double
-      - k: float
-      - min_size: int
-      - name_: string
-    ' 方法
+class segmentation.GraphSegmentationImpl {
+    ' __ 字段 __
+      - double sigma
+      - float k
+      - int min_size
+      - string name_
+    ____
+    - void filter(const Mat &img, Mat &img_filtered)
+    - void buildGraph(Edge **edges, int &nb_edges, const Mat &img_filtered)
+    - void segmentGraph(Edge *edges, const int &nb_edges, const Mat &img_filtered, PointSet **es)
+    - void filterSmallAreas(Edge *edges, const int &nb_edges, PointSet *es)
+    - void finalMapping(PointSet *es, Mat &output)
+    .. constructor ..
     + GraphSegmentationImpl()
-
-    + processImage(cv::InputArray src, cv::OutputArray dst): void
-    +setSigma(double sigma): void
-    + getSigma() double
-    + setK(float k) void
-    + getK() float
-    + setMinSize(int min_size): void
-    + getMinSize(): int
-
-    - filter(const Mat &img, Mat &img_filtered): void
-    - buildGraph(Edge **edges, int &nb_edges, const Mat &img_filtered): void
-    - segmentGraph(Edge *edges, const int &nb_edges, const Mat &img_filtered, PointSet **es): void
-    - filterSmallAreas(Edge *edges, const int &nb_edges, PointSet *es): void
-    - finalMapping(PointSet *es, Mat &output): void
+    .. override ..
+    + virtual void processImage(cv::InputArray src, cv::OutputArray dst) override
+    +virtual void setSigma(double sigma) override
+    + virtual void setK(float k) override
+    + virtual void setMinSize(int min_size) override
+    + virtual double getSigma() override
+    + virtual float getK() override
+    + virtual int getMinSize() override
 }
 
-class Edge {
+class segmentation.Edge {
     ' 属性
-    + from: int
-    + to: int
-    + weight: float
+    + int from
+    + in to
+    + float weight
     ' 方法
-    + operator<(const Edge &e): bool
+    + bool operator<(const Edge &e) const
 }
 
-class PointSet {
+class segmentation.PointSet {
     ' 属性
-    + nb_elements: int
+    - PointSetElement *mapping
+    + int nb_elements
     ' 方法
     + PointSet(int nb_elements_)
     + ~PointSet()
-
-    + getBasePoint(int p): int
-    + joinPoints(int p_a, int p_b): int
-    + size(unsigned int p): int
+    + int getBasePoint(int p)
+    + void joinPoints(int p_a, int p_b)
+    + int size(unsigned int p)
 }
 
-class PointSetElement {
+class segmentation.PointSetElement {
     ' 属性
-    + p: int
-    + size: int
+    + int p
+    + int size
     ' 方法
     + PointSetElement()
     + PointSetElement(int p_)
