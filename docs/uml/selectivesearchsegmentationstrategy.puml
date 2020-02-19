@@ -3,115 +3,119 @@ skinparam classAttributeIconSize 0
 scale 4096 width
 title 选择性搜索算法 - 相似度计算
 
-SelectiveSearchSegmentationStrategy <.. SelectiveSearchSegmentation
+segmentation.SelectiveSearchSegmentationStrategy <.. segmentation.SelectiveSearchSegmentation
 
-SelectiveSearchSegmentationStrategyColor <.. SelectiveSearchSegmentationImpl
+segmentation.SelectiveSearchSegmentationStrategyColor <.. segmentation.SelectiveSearchSegmentationImpl
 
-SelectiveSearchSegmentationStrategyTexture <.. SelectiveSearchSegmentationImpl
+segmentation.SelectiveSearchSegmentationStrategyTexture <.. segmentation.SelectiveSearchSegmentationImpl
 
-SelectiveSearchSegmentationStrategyFill <.. SelectiveSearchSegmentationImpl
+segmentation.SelectiveSearchSegmentationStrategyFill <.. segmentation.SelectiveSearchSegmentationImpl
 
-SelectiveSearchSegmentationStrategySize <.. SelectiveSearchSegmentationImpl
+segmentation.SelectiveSearchSegmentationStrategySize <.. segmentation.SelectiveSearchSegmentationImpl
 
-SelectiveSearchSegmentationStrategyMultiple <.. SelectiveSearchSegmentationImpl
+segmentation.SelectiveSearchSegmentationStrategyMultiple <.. segmentation.SelectiveSearchSegmentationImpl
 
 ' 分割策略
 
-SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyColor
+segmentation.SelectiveSearchSegmentationStrategy <|-- segmentation.SelectiveSearchSegmentationStrategyColor
 
-SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyFill
+segmentation.SelectiveSearchSegmentationStrategy <|-- segmentation.SelectiveSearchSegmentationStrategyTexture
 
-SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategySize
+segmentation.SelectiveSearchSegmentationStrategy <|-- segmentation.SelectiveSearchSegmentationStrategyFill
 
-SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyTexture
+segmentation.SelectiveSearchSegmentationStrategy <|-- segmentation.SelectiveSearchSegmentationStrategySize
 
-SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyMultiple
+segmentation.SelectiveSearchSegmentationStrategy <|-- segmentation.SelectiveSearchSegmentationStrategyMultiple
 
-SelectiveSearchSegmentationStrategyColor <|-- SelectiveSearchSegmentationStrategyColorImpl
+segmentation.SelectiveSearchSegmentationStrategyColor <|-- segmentation.SelectiveSearchSegmentationStrategyColorImpl
 
-SelectiveSearchSegmentationStrategyTexture <|-- SelectiveSearchSegmentationStrategyTextureImpl
+segmentation.SelectiveSearchSegmentationStrategyTexture <|-- segmentation.SelectiveSearchSegmentationStrategyTextureImpl
 
-SelectiveSearchSegmentationStrategyFill <|-- SelectiveSearchSegmentationStrategyFillImpl
+segmentation.SelectiveSearchSegmentationStrategyFill <|-- segmentation.SelectiveSearchSegmentationStrategyFillImpl
 
-SelectiveSearchSegmentationStrategySize <|-- SelectiveSearchSegmentationStrategySizeImpl
+segmentation.SelectiveSearchSegmentationStrategySize <|-- segmentation.SelectiveSearchSegmentationStrategySizeImpl
 
-SelectiveSearchSegmentationStrategyMultiple <|-- SelectiveSearchSegmentationStrategyMultipleImpl
+segmentation.SelectiveSearchSegmentationStrategyMultiple <|-- segmentation.SelectiveSearchSegmentationStrategyMultipleImpl
 
-class SelectiveSearchSegmentationStrategy {
-    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
-    + get(int r1, int r2): float
-    + merge(int r1, int r2): void
+class segmentation.SelectiveSearchSegmentationStrategy {
+    + virtual void setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1) = 0
+    + virtual float get(int r1, int r2) = 0
+    + virtual void merge(int r1, int r2) = 0
 }
 
-class SelectiveSearchSegmentationStrategyColorImpl {
-    - name_: std::string
-    - histograms: cv::Mat
-    - sizes: cv::Mat
-    - histogram_size: int
-    - last_image_id: int
-    - last_histograms: cv::Mat
-
+class segmentation.SelectiveSearchSegmentationStrategyColorImpl {
+    - std::string name_
+    - cv::Mat histograms
+    - cv::Mat sizes
+    - int histogram_size
+    - int last_image_id
+    - cv::Mat last_histograms
+    __
     + SelectiveSearchSegmentationStrategyColorImpl()
-    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
-    + get(int r1, int r2): float
-    + merge(int r1, int r2): void
+    .. override ..
+    + virtual void setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1) override
+    + virtual float get(int r1, int r2) override
+    + virtual void merge(int r1, int r2) override
 }
 
-
-class SelectiveSearchSegmentationStrategyTextureImpl {
-    - name_: std::string
-    - histograms: cv::Mat
-    - sizes: cv::Mat
-    - histogram_size: int
-    - last_image_id: int
-    - last_histograms: cv::Mat
-
+class segmentation.SelectiveSearchSegmentationStrategyTextureImpl {
+    - std::string name_
+    - cv::Mat histograms
+    - cv::Mat sizes
+    - int histogram_size
+    - int last_image_id
+    - cv::Mat last_histograms
+    __
     + SelectiveSearchSegmentationStrategyTextureImpl()
-    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
-    + get(int r1, int r2): float
-    + merge(int r1, int r2): void
+    .. override ..
+    + virtual void setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1) override
+    + virtual float get(int r1, int r2) override
+    + virtual void merge(int r1, int r2) override
 }
 
-class SelectiveSearchSegmentationStrategyFillImpl {
-    - name_: std::string
-    - sizes: cv::Mat
-    - size_image: int
-    - bounding_rects: std::vector<cv::Rect>
-
+class segmentation.SelectiveSearchSegmentationStrategyFillImpl {
+    - std::string name_
+    - cv::Mat sizes
+    - int size_image
+    - std::vector<cv::Rect> bounding_rects
+    __
     + SelectiveSearchSegmentationStrategyFillImpl()
-    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
-    + get(int r1, int r2): float
-    + merge(int r1, int r2): void
+    .. override ..
+    + virtual void setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1) override
+    + virtual float get(int r1, int r2) override
+    + virtual void merge(int r1, int r2) override
 }
 
-class SelectiveSearchSegmentationStrategySizeImpl {
-    - name_: std::string
-    - sizes: cv::Mat
-    - size_image: int
-
+class segmentation.SelectiveSearchSegmentationStrategySizeImpl {
+    - std::string name_
+    - cv::Mat sizes
+    - int size_image
+    __
     + SelectiveSearchSegmentationStrategySizeImpl()
-    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
-    + get(int r1, int r2): float
-    + merge(int r1, int r2): void
+    .. override ..
+    + virtual void setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1) override
+    + virtual float get(int r1, int r2) override
+    + virtual void merge(int r1, int r2) override
 }
 
-class SelectiveSearchSegmentationStrategyMultiple {
-    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> g, float weight): void
-    + clearStrategies(): void
+class segmentation.SelectiveSearchSegmentationStrategyMultiple {
+    + virtual void addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> g, float weight) = 0
+    + virtual void clearStrategies() = 0
 }
 
-class SelectiveSearchSegmentationStrategyMultipleImpl {
-    - name_: std::string
-    - strategies: std::vector<std::shared_ptr<SelectiveSearchSegmentationStrategy> >
-    - weights: std::vector<float>
-    - weights_total: float
-
+class segmentation.SelectiveSearchSegmentationStrategyMultipleImpl {
+    - std::string name_
+    - std::vector<std::shared_ptr<SelectiveSearchSegmentationStrategy> > strategies
+    - std::vector<float> weights
+    - float weights_total
+    __
     + SelectiveSearchSegmentationStrategyMultipleImpl()
-    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
-    + get(int r1, int r2): float
-    + merge(int r1, int r2): void
-    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> g, float weight): void
-    + clearStrategies(): void
+    .. override ..
+    + virtual void setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1) override
+    + virtual float get(int r1, int r2) override
+    + virtual void merge(int r1, int r2) override
+    + virtual void addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> g, float weight) override
+    + virtual void clearStrategies() override
 }
 
 @enduml

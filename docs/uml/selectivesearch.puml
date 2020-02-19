@@ -3,72 +3,71 @@ skinparam classAttributeIconSize 0
 scale 4096 width
 title 选择性搜索算法
 
-GraphSegmentation <.. SelectiveSearchSegmentation
+segmentation.GraphSegmentation <.. segmentation.SelectiveSearchSegmentation
 
-SelectiveSearchSegmentationStrategy <.. SelectiveSearchSegmentation
+segmentation.SelectiveSearchSegmentationStrategy <.. segmentation.SelectiveSearchSegmentation
 
-SelectiveSearchSegmentation <|-- SelectiveSearchSegmentationImpl
+segmentation.SelectiveSearchSegmentation <|-- segmentation.SelectiveSearchSegmentationImpl
 
-Region <|-- SelectiveSearchSegmentationImpl
+segmentation.Region <|-- segmentation.SelectiveSearchSegmentationImpl
 
-Neighbour <|-- SelectiveSearchSegmentationImpl
+segmentation.Neighbour <|-- segmentation.SelectiveSearchSegmentationImpl
 
-class SelectiveSearchSegmentation {
-    + setBaseImage(cv::InputArray img): void
-    + switchToSingleStrategy(int k = 200, float sigma = 0.8f): void
-    + switchToSelectiveSearchFast(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
-    + switchToSelectiveSearchQuality(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
-    + addImage(cv::InputArray img): void
-    + clearImages(): void
-    + addGraphSegmentation(std::shared_ptr<GraphSegmentation> g): void
-    + clearGraphSegmentations(): void
-    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> s): void
-    + clearStrategies(): void
-    + process(std::vector<cv::Rect> &rects): void
+class segmentation.SelectiveSearchSegmentation {
+    + virtual void setBaseImage(cv::InputArray img) = 0
+    + virtual void switchToSingleStrategy(int k = 200, float sigma = 0.8f) = 0
+    + virtual void switchToSelectiveSearchFast(int base_k = 150, int inc_k = 150, float sigma = 0.8f) = 0
+    + virtual void switchToSelectiveSearchQuality(int base_k = 150, int inc_k = 150, float sigma = 0.8f) = 0
+    + virtual void addImage(cv::InputArray img) = 0
+    + virtual void clearImages() = 0
+    + virtual void addGraphSegmentation(std::shared_ptr<GraphSegmentation> g) = 0
+    + virtual void clearGraphSegmentations() = 0
+    + virtual void addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> s) = 0
+    + virtual void process(std::vector<cv::Rect> &rects) = 0
 }
 
-class SelectiveSearchSegmentationImpl {
-    - name_: std::string
-    - base_image: cv::Mat
-    - images: std::vector<cv::Mat>
-    - segmentations: std::vector<std::shared_ptr<GraphSegmentation> >
-    - strategies: std::vector<std::shared_ptr<SelectiveSearchSegmentationStrategy> >
-
+class segmentation.SelectiveSearchSegmentationImpl {
+    - std::string name_
+    - cv::Mat base_image
+    - std::vector<cv::Mat> images
+    - std::vector<std::shared_ptr<GraphSegmentation> > segmentations
+    - std::vector<std::shared_ptr<SelectiveSearchSegmentationStrategy> > strategies
+    __
+    - void hierarchicalGrouping()
+    .. constructor ..
     + SelectiveSearchSegmentationImpl()
-
-    + setBaseImage(cv::InputArray img): void
-    + switchToSingleStrategy(int k = 200, float sigma = 0.8f): void
-    + switchToSelectiveSearchFast(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
-    + switchToSelectiveSearchQuality(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
-    + addImage(cv::InputArray img): void
-    + clearImages(): void
-    + addGraphSegmentation(std::shared_ptr<GraphSegmentation> g): void
-    + clearGraphSegmentations(): void
-    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> s): void
-    + clearStrategies(): void
-    + process(std::vector<cv::Rect> &rects): void   
-    - hierarchicalGrouping(...): void
+    .. override ..
+    + virtual void setBaseImage(cv::InputArray img) override
+    + virtual void switchToSingleStrategy(int k = 200, float sigma = 0.8f) override
+    + virtual void switchToSelectiveSearchFast(int base_k = 150, int inc_k = 150, float sigma = 0.8f) override
+    + virtual void switchToSelectiveSearchQuality(int base_k = 150, int inc_k = 150, float sigma = 0.8f) override
+    + virtual void addImage(cv::InputArray img) override
+    + virtual void clearImages() override
+    + virtual void addGraphSegmentation(std::shared_ptr<GraphSegmentation> g) override
+    + virtual void clearGraphSegmentations() override
+    + virtual void addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> s) override
+    + virtual void process(std::vector<cv::Rect> &rects) override
 }
 
-class Region {
-    + id: int
-    + level: int
-    + merge_to: int
-    + rank: double
-    + bounding_box: cv::Rect
+class segmentation.Region {
+    + int id
+    + int level
+    + int merged_to
+    + double rank
+    + cv::Rect bounding_box
 
     + Region()
-    + &operator<<(std::ostream &os, const Region &n): std::ostream
-    + operator<(const Region &n): bool
+    + friend std::ostream &operator<<(std::ostream &os, const Region &n)
+    + bool operator<(const Region &n) const
 }
 
-class Neighbour {
-    + from: int
-    + to: int
-    + similarity: float
+class segmentation.Neighbour {
+    + int from
+    + int to
+    + float similarity
 
-    + &operator<<(std::ostream &os, const Neighbour &n): std::ostream
-    + operator<(const Neighbour &n): bool
+    + friend std::ostream &operator<<(std::ostream &os, const Neighbour &n)
+    + bool operator<(const Neighbour &n) const
 }
 
 @enduml
