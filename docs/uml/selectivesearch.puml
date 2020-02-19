@@ -1,0 +1,74 @@
+@startuml
+skinparam classAttributeIconSize 0
+scale 4096 width
+title 选择性搜索算法
+
+GraphSegmentation <.. SelectiveSearchSegmentation
+
+SelectiveSearchSegmentationStrategy <.. SelectiveSearchSegmentation
+
+SelectiveSearchSegmentation <|-- SelectiveSearchSegmentationImpl
+
+Region <|-- SelectiveSearchSegmentationImpl
+
+Neighbour <|-- SelectiveSearchSegmentationImpl
+
+class SelectiveSearchSegmentation {
+    + setBaseImage(cv::InputArray img): void
+    + switchToSingleStrategy(int k = 200, float sigma = 0.8f): void
+    + switchToSelectiveSearchFast(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
+    + switchToSelectiveSearchQuality(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
+    + addImage(cv::InputArray img): void
+    + clearImages(): void
+    + addGraphSegmentation(std::shared_ptr<GraphSegmentation> g): void
+    + clearGraphSegmentations(): void
+    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> s): void
+    + clearStrategies(): void
+    + process(std::vector<cv::Rect> &rects): void
+}
+
+class SelectiveSearchSegmentationImpl {
+    - name_: std::string
+    - base_image: cv::Mat
+    - images: std::vector<cv::Mat>
+    - segmentations: std::vector<std::shared_ptr<GraphSegmentation> >
+    - strategies: std::vector<std::shared_ptr<SelectiveSearchSegmentationStrategy> >
+
+    + SelectiveSearchSegmentationImpl()
+
+    + setBaseImage(cv::InputArray img): void
+    + switchToSingleStrategy(int k = 200, float sigma = 0.8f): void
+    + switchToSelectiveSearchFast(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
+    + switchToSelectiveSearchQuality(int base_k = 150, int inc_k = 150, float sigma = 0.8f): void
+    + addImage(cv::InputArray img): void
+    + clearImages(): void
+    + addGraphSegmentation(std::shared_ptr<GraphSegmentation> g): void
+    + clearGraphSegmentations(): void
+    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> s): void
+    + clearStrategies(): void
+    + process(std::vector<cv::Rect> &rects): void   
+    - hierarchicalGrouping(...): void
+}
+
+class Region {
+    + id: int
+    + level: int
+    + merge_to: int
+    + rank: double
+    + bounding_box: cv::Rect
+
+    + Region()
+    + &operator<<(std::ostream &os, const Region &n): std::ostream
+    + operator<(const Region &n): bool
+}
+
+class Neighbour {
+    + from: int
+    + to: int
+    + similarity: float
+
+    + &operator<<(std::ostream &os, const Neighbour &n): std::ostream
+    + operator<(const Neighbour &n): bool
+}
+
+@enduml

@@ -1,0 +1,117 @@
+@startuml
+skinparam classAttributeIconSize 0
+scale 4096 width
+title 选择性搜索算法 - 相似度计算
+
+SelectiveSearchSegmentationStrategy <.. SelectiveSearchSegmentation
+
+SelectiveSearchSegmentationStrategyColor <.. SelectiveSearchSegmentationImpl
+
+SelectiveSearchSegmentationStrategyTexture <.. SelectiveSearchSegmentationImpl
+
+SelectiveSearchSegmentationStrategyFill <.. SelectiveSearchSegmentationImpl
+
+SelectiveSearchSegmentationStrategySize <.. SelectiveSearchSegmentationImpl
+
+SelectiveSearchSegmentationStrategyMultiple <.. SelectiveSearchSegmentationImpl
+
+' 分割策略
+
+SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyColor
+
+SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyFill
+
+SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategySize
+
+SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyTexture
+
+SelectiveSearchSegmentationStrategy <|-- SelectiveSearchSegmentationStrategyMultiple
+
+SelectiveSearchSegmentationStrategyColor <|-- SelectiveSearchSegmentationStrategyColorImpl
+
+SelectiveSearchSegmentationStrategyTexture <|-- SelectiveSearchSegmentationStrategyTextureImpl
+
+SelectiveSearchSegmentationStrategyFill <|-- SelectiveSearchSegmentationStrategyFillImpl
+
+SelectiveSearchSegmentationStrategySize <|-- SelectiveSearchSegmentationStrategySizeImpl
+
+SelectiveSearchSegmentationStrategyMultiple <|-- SelectiveSearchSegmentationStrategyMultipleImpl
+
+class SelectiveSearchSegmentationStrategy {
+    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
+    + get(int r1, int r2): float
+    + merge(int r1, int r2): void
+}
+
+class SelectiveSearchSegmentationStrategyColorImpl {
+    - name_: std::string
+    - histograms: cv::Mat
+    - sizes: cv::Mat
+    - histogram_size: int
+    - last_image_id: int
+    - last_histograms: cv::Mat
+
+    + SelectiveSearchSegmentationStrategyColorImpl()
+    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
+    + get(int r1, int r2): float
+    + merge(int r1, int r2): void
+}
+
+
+class SelectiveSearchSegmentationStrategyTextureImpl {
+    - name_: std::string
+    - histograms: cv::Mat
+    - sizes: cv::Mat
+    - histogram_size: int
+    - last_image_id: int
+    - last_histograms: cv::Mat
+
+    + SelectiveSearchSegmentationStrategyTextureImpl()
+    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
+    + get(int r1, int r2): float
+    + merge(int r1, int r2): void
+}
+
+class SelectiveSearchSegmentationStrategyFillImpl {
+    - name_: std::string
+    - sizes: cv::Mat
+    - size_image: int
+    - bounding_rects: std::vector<cv::Rect>
+
+    + SelectiveSearchSegmentationStrategyFillImpl()
+    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
+    + get(int r1, int r2): float
+    + merge(int r1, int r2): void
+}
+
+class SelectiveSearchSegmentationStrategySizeImpl {
+    - name_: std::string
+    - sizes: cv::Mat
+    - size_image: int
+
+    + SelectiveSearchSegmentationStrategySizeImpl()
+    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
+    + get(int r1, int r2): float
+    + merge(int r1, int r2): void
+}
+
+class SelectiveSearchSegmentationStrategyMultiple {
+    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> g, float weight): void
+    + clearStrategies(): void
+}
+
+class SelectiveSearchSegmentationStrategyMultipleImpl {
+    - name_: std::string
+    - strategies: std::vector<std::shared_ptr<SelectiveSearchSegmentationStrategy> >
+    - weights: std::vector<float>
+    - weights_total: float
+
+    + SelectiveSearchSegmentationStrategyMultipleImpl()
+    + setImage(cv::InputArray img, cv::InputArray regions, cv::InputArray sizes, int image_id = -1): void
+    + get(int r1, int r2): float
+    + merge(int r1, int r2): void
+    + addStrategy(std::shared_ptr<SelectiveSearchSegmentationStrategy> g, float weight): void
+    + clearStrategies(): void
+}
+
+@enduml
