@@ -202,18 +202,25 @@ namespace segmentation {
 
                 const int *previous_p = NULL;
 
+                // 遍历图分割结果，设置相邻区域
                 for (int i = 0; i < (int) img_regions.rows; i++) {
                     const int *p = img_regions.ptr<int>(i);
 
                     for (int j = 0; j < (int) img_regions.cols; j++) {
 
+                        // 保存每个区域的点集
                         points[p[j]].push_back(cv::Point(j, i));
+                        // 保存分割结果中每个区域的大小
                         sizes.at<int>(p[j], 0) = sizes.at<int>(p[j], 0) + 1;
 
+                        // 设置相邻区域
                         if (i > 0 && j > 0) {
 
+                            // 当前点所属区域与左边点所属区域
                             is_neighbour.at<char>(p[j], p[j - 1]) = 1;
+                            // 当前点所属区域与上面点所属区域
                             is_neighbour.at<char>(p[j], previous_p[j]) = 1;
+                            // 当前点所属区域与左上角点所属区域
                             is_neighbour.at<char>(p[j], previous_p[j - 1]) = 1;
 
                             is_neighbour.at<char>(p[j - 1], p[j]) = 1;
@@ -224,13 +231,16 @@ namespace segmentation {
                     previous_p = p;
                 }
 
+                // 计算每个区域边框所属位置和大小
                 for (int seg = 0; seg < nb_segs; seg++) {
                     bounding_rects[seg] = cv::boundingRect(points[seg]);
                 }
 
+                // 调用不同的相似性度量
                 for (std::vector<std::shared_ptr<SelectiveSearchSegmentationStrategy> >::iterator strategy = strategies.begin();
                      strategy != strategies.end(); ++strategy) {
                     std::vector<Region> regions;
+                    // 通过分层分组算法计算所有候选区域
                     hierarchicalGrouping(*image, *strategy, img_regions, is_neighbour, sizes, nb_segs, bounding_rects,
                                          regions, image_id);
 
@@ -243,6 +253,7 @@ namespace segmentation {
             }
         }
 
+        // 按秩排序
         std::sort(all_regions.begin(), all_regions.end());
 
         std::map<cv::Rect, char, rectComparator> processed_rect;
@@ -259,6 +270,18 @@ namespace segmentation {
 
     }
 
+    /**
+     * 计算相邻区域之间的相似度，然后找出相似度最高的相邻区域对进行合并，迭代上述过程直到分割集合并成整个图像
+     * @param img：不同颜色空间下的原始图像
+     * @param s：相似度计算
+     * @param img_regions：图分割算法得到的初始分割集
+     * @param is_neighbour：邻接矩阵
+     * @param sizes_：各个区域大小
+     * @param nb_segs：初始分割集区域个数
+     * @param bounding_rects：各个区域所属边框的坐标和大小
+     * @param regions：保存这次分层分组算法计算得到的候选区域
+     * @param image_id：是否位于同一颜色空间以及同一图分割对象
+     */
     void SelectiveSearchSegmentationImpl::hierarchicalGrouping(const cv::Mat &img,
                                                                std::shared_ptr<SelectiveSearchSegmentationStrategy> &s,
                                                                const cv::Mat &img_regions,
@@ -279,14 +302,16 @@ namespace segmentation {
         // Compute initial similarities
         for (int i = 0; i < nb_segs; i++) {
             Region r;
-
+            // 所属区域
             r.id = i;
+            // 初始区域等级为１，表示经过一次分割，在后续的合并操作中，每次合并后新区域的level+1
             r.level = 1;
             r.merged_to = -1;
+            // 区域所属边框大小
             r.bounding_box = bounding_rects[i];
-
+            // 加入初始分割区域
             regions.push_back(r);
-
+            // 根据邻接矩阵计算当前区域与相邻区域的相似度
             for (int j = i + 1; j < nb_segs; j++) {
                 if (is_neighbour.at<char>(i, j)) {
                     Neighbour n;
@@ -300,23 +325,24 @@ namespace segmentation {
         }
 
         while (similarities.size() > 0) {
-
+            // 根据相似度大小排序
             std::sort(similarities.begin(), similarities.end());
 
             // for(std::vector<Neighbour>::iterator similarity = similarities.begin(); similarity != similarities.end(); ++similarity) {
             //     std::cout << *similarity << std::endl;
             // }
-
+            // 获取最高相似度的相邻区域对
             Neighbour p = similarities.back();
             similarities.pop_back();
 
             Region region_from = regions[p.from];
             Region region_to = regions[p.to];
-
+            // 合并相邻区域，
             Region new_r;
             new_r.id = std::min(region_from.id, region_to.id); // Should be the smalest, working ID
             new_r.level = std::max(region_from.level, region_to.level) + 1;
             new_r.merged_to = -1;
+            // 计算合并区域所属边框
             new_r.bounding_box = region_from.bounding_box | region_to.bounding_box;
 
             regions.push_back(new_r);
@@ -332,9 +358,10 @@ namespace segmentation {
             sizes.at<int>(region_to.id, 0) = sizes.at<int>(region_from.id, 0);
 
             std::vector<int> local_neighbours;
-
+            // 重新计算合并区域的相似度
             for (std::vector<Neighbour>::iterator similarity = similarities.begin();
                  similarity != similarities.end();) {
+                // 如果当前相似区域对包含了之前合并的区域，则重新计算
                 if ((*similarity).from == p.from || (*similarity).to == p.from || (*similarity).from == p.to ||
                     (*similarity).to == p.to) {
                     int from = 0;
@@ -357,7 +384,7 @@ namespace segmentation {
                     if (!already_neighboor) {
                         local_neighbours.push_back(from);
                     }
-
+                    // 擦除原先的相似对
                     similarity = similarities.erase(similarity);
                 } else {
                     similarity++;
@@ -377,7 +404,9 @@ namespace segmentation {
         }
 
         // Compute regions' rank
+        // 调用随机数计算区域排名
         for (std::vector<Region>::iterator region = regions.begin(); region != regions.end(); ++region) {
+            // 属性level表明了区域合并次数
             // Note: this is inverted from the paper, but we keep the lover region first so it's works
             (*region).rank = ((double) rand() / (RAND_MAX)) * ((*region).level);
         }
