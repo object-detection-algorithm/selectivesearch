@@ -5,6 +5,7 @@
 #include "../include/selectivesearch/selective_search_segmentation_strategy_color_impl.h"
 
 namespace segmentation {
+
     void SelectiveSearchSegmentationStrategyColorImpl::setImage(cv::InputArray img_, cv::InputArray regions_, cv::InputArray sizes_,
                                                                 int image_id) {
 
@@ -14,6 +15,7 @@ namespace segmentation {
 
         if (image_id == -1 || last_image_id != image_id) {
 
+            // 分离颜色通道
             std::vector<cv::Mat> img_planes;
             split(img, img_planes);
 
@@ -27,12 +29,13 @@ namespace segmentation {
             int nb_segs = (int) max + 1;
 
             histogram_size = histogram_bins_size * img.channels();
-
+            // 保存每个区域的颜色直方图
             histograms = cv::Mat_<float>(nb_segs, histogram_size);
 
             for (int r = 0; r < nb_segs; r++) {
 
                 // Generate mask
+                // 设置掩码，计算每个区域的直方图
                 cv::Mat mask = regions == r;
 
                 // Compute histogram for each channels
@@ -43,6 +46,7 @@ namespace segmentation {
                 int h_pos = 0;
                 cv::Mat tmp_hist;
 
+                // 逐通道计算每个区域的直方图并保存（25*3=75维）
                 for (int p = 0; p < img.channels(); p++) {
 
                     calcHist(&img_planes[p], 1, 0, mask, tmp_hist, 1, &histogram_bins_size, &histogram_ranges);
@@ -58,6 +62,7 @@ namespace segmentation {
                 }
 
                 // Normalize historgrams
+                // 直方图标准化
                 float *histogram = histograms.ptr<float>(r);
 
                 for (int h_pos2 = 0; h_pos2 < histogram_size; h_pos2++) {
@@ -66,6 +71,7 @@ namespace segmentation {
             }
 
             // Save cache if we have an image id
+            // 如果使用的是同一个颜色空间，同一个图分割对象实现的初始分割集，则利用缓存进行处理
             if (image_id != -1) {
                 last_histograms = histograms.clone();
                 last_image_id = image_id;
@@ -82,6 +88,7 @@ namespace segmentation {
         float *h1 = histograms.ptr<float>(r1);
         float *h2 = histograms.ptr<float>(r2);
 
+        // 比较两个区域直方图每一维的大小，进行累加
         for (int i = 0; i < histogram_size; i++) {
             r += cv::min(h1[i], h2[i]);
         }
