@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(cpluplus)
+project(selectivesearch)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_PREFIX_PATH /home/zj/opencv/opencv-4.2.0/install)
@@ -14,13 +14,13 @@ MESSAGE("OpenCV OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
 MESSAGE("OpenCV OpenCV_LIBS: ${OpenCV_LIBS}")
 
 #图分割算法
-#add_executable(cpluplus samples/graphsegmentation_custom.cpp
+#add_executable(selectivesearch samples/graphsegmentation_custom.cpp
 #        include/segmentation.h
 #        include/graphsegment/graphsegmentation.h include/graphsegment/graphsegmentationimpl.h
 #        include/graphsegment/edge.h include/graphsegment/point_set_element.h include/graphsegment/point_set.h
 #        src/graphsegmentation.cpp src/graphsegmentationimpl.cpp src/point_set.cpp
 #        )
-add_executable(cpluplus samples/selectivesearchsegmentation_custom.cpp
+add_executable(selectivesearch samples/selectivesearchsegmentation_custom.cpp
         include/selectivesearch/selectivesearchsegmentation.h
         include/selectivesearch/selectivesearchsegmentationimpl.h
 
@@ -62,4 +62,4 @@ add_executable(cpluplus samples/selectivesearchsegmentation_custom.cpp
         include/graphsegment/edge.h include/graphsegment/point_set_element.h include/graphsegment/point_set.h
         src/graphsegmentation.cpp src/graphsegmentationimpl.cpp src/point_set.cpp
         )
-target_link_libraries(cpluplus ${OpenCV_LIBS})
+target_link_libraries(selectivesearch ${OpenCV_LIBS})

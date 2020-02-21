@@ -60,28 +60,28 @@ static void help() {
 
 int main(int argc, char **argv) {
 
-//    if (argc < 3) {
-//        help();
-//        return -1;
-//    }
+    if (argc < 3) {
+        help();
+        return -1;
+    }
 
 //    std::string img_path = "../../imgs/beach.png";
-    std::string img_path = "../../imgs/000262.jpg";
-    Mat img = imread(img_path, cv::IMREAD_COLOR);
-//    Mat img = imread(argv[1]);
+//    std::string img_path = "../../imgs/000262.jpg";
+//    Mat img = imread(img_path, cv::IMREAD_COLOR);
+    Mat img = imread(argv[1]);
 
     std::shared_ptr<SelectiveSearchSegmentation> gs = createSelectiveSearchSegmentation();
     gs->setBaseImage(img);
 
-    char switch_item = 'q';
-    if (switch_item == 's') {
-//    if (argv[2][0] == 's') {
+//    char switch_item = 'q';
+//    if (switch_item == 's') {
+    if (argv[2][0] == 's') {
         gs->switchToSingleStrategy();
-    } else if (switch_item == 'f') {
-//    } else if (argv[2][0] == 'f') {
+//    } else if (switch_item == 'f') {
+    } else if (argv[2][0] == 'f') {
         gs->switchToSelectiveSearchFast();
-    } else if (switch_item == 'q') {
-//    } else if (argv[2][0] == 'q') {
+//    } else if (switch_item == 'q') {
+    } else if (argv[2][0] == 'q') {
         gs->switchToSelectiveSearchQuality();
     } else {
         help();
