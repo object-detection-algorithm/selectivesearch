@@ -5,6 +5,15 @@
 #include "../include/selectivesearch/selective_search_segmentation_strategy_texture_impl.h"
 
 namespace segmentation {
+
+    /*
+     * 计算纹理特征的方向导数直方图
+     * 1. 分离图像各通道
+     * 2. 使用scharr + thresh进行求导操作
+     * 3. 分别计算左/右、上/下、左上/右下、左下/右上的方向导数
+     * 4. 转换求导结果的取值到[0, 255]
+     * 5. 手动计算直方图（不再利用OpenCV进行多个直方图计算再进行连接）并进行标准化
+     */
     void SelectiveSearchSegmentationStrategyTextureImpl::setImage(
             cv::InputArray img_, cv::InputArray regions_, cv::InputArray sizes_, int image_id) {
 
@@ -25,6 +34,7 @@ namespace segmentation {
             minMaxLoc(regions, &min, &max);
             int nb_segs = (int) max + 1;
 
+            // 计算每个区域不同通道的方向导数直方图
             histogram_size = histogram_bins_size * img.channels() * 8;
 
             histograms = cv::Mat_<float>(nb_segs, histogram_size);
@@ -32,6 +42,8 @@ namespace segmentation {
             // Compute, for each channels, the 8 gaussians
             std::vector<cv::Mat> img_gaussians;
 
+            // 通过Schaar方法进行高斯平滑和差分
+            // 计算上/下/左/右以及右上角/右下角/左上角/左下角的方向导数直方图
             for (int p = 0; p < img.channels(); p++) {
 
                 cv::Mat tmp_gradiant;
