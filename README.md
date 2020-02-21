@@ -6,7 +6,7 @@
 
 `OpenCV`实现了论文[Selective Search for Object Recognition](http://xueshu.baidu.com/usercenter/paper/show?paperid=b689fcf3ed998dfbb4213687367b6175&site=xueshu_se)提供的选择性搜索算法。当前仓库将整个工程进行重构，以便进一步的学习和使用
 
-*当前使用`OpenCV 4.2.0`*
+*当前在`Ubuntu 18.04`下使用`OpenCV 4.2.0`*
 
 ## 内容列表
 
@@ -23,10 +23,21 @@
 
 ## 安装
 
-本地编译文档需要预先安装以下工具：
+### 本地编译文档
+
+需要预先安装以下工具：
 
 ```
 $ pip install mkdocs
+```
+
+### 本地编译程序
+
+需要预先安装以下工具：
+
+```
+# Ubuntu 18.04
+$ sudo apt install gcc g++ make cmake 
 ```
 
 ## 用法
@@ -45,6 +56,23 @@ $ pip install mkdocs
     $ mkdocs serve
     ```
     启动本地服务器后即可登录浏览器`localhost:8000`
+
+### 编译程序
+
+编译如下：
+
+```
+$ cd cplusplus
+$ cmake -S . -B cmake-build
+$ cd cmake-build/
+$ make
+```
+
+测试如下：
+
+```
+$ ./selectivesearch ../../imgs/000262.jpg q
+```
 
 ## 主要维护人员
 
