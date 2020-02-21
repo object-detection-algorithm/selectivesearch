@@ -74,6 +74,8 @@ $ make
 $ ./selectivesearch ../../imgs/000262.jpg q
 ```
 
+![](./imgs/selectivesearch-compile-run.gif)
+
 ## 主要维护人员
 
 * zhujian - *Initial work* - [zjZSTU](https://github.com/zjZSTU)
