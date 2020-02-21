@@ -20,3 +20,7 @@
 ```
 
 将源文件拆分成多个目标文件，方便进一步的理解
+
+## 相关
+
+* [选择性搜索算法小结](https://www.zhujian.tech/posts/58ff6dae.html)
