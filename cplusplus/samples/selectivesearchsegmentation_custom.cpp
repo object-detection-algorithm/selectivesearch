@@ -65,7 +65,8 @@ int main(int argc, char **argv) {
 //        return -1;
 //    }
 
-    std::string img_path = "../../imgs/beach.png";
+//    std::string img_path = "../../imgs/beach.png";
+    std::string img_path = "../../imgs/000262.jpg";
     Mat img = imread(img_path, cv::IMREAD_COLOR);
 //    Mat img = imread(argv[1]);
 
