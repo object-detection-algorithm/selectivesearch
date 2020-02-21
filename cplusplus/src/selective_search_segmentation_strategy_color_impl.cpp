@@ -6,6 +6,12 @@
 
 namespace segmentation {
 
+    /*
+     * 计算每个区域的颜色直方图
+     * 1. 分离各通道
+     * 2. 计算每个区域的颜色直方图，大小为25 bin
+     * 3. 连接各通道的颜色直方图，并进行标准化（除以所有bin的和）
+     */
     void SelectiveSearchSegmentationStrategyColorImpl::setImage(cv::InputArray img_, cv::InputArray regions_, cv::InputArray sizes_,
                                                                 int image_id) {
 
@@ -46,7 +52,7 @@ namespace segmentation {
                 int h_pos = 0;
                 cv::Mat tmp_hist;
 
-                // 逐通道计算每个区域的直方图并保存（25*3=75维）
+                // 逐通道计算每个区域的直方图并保存（25*通道数）
                 for (int p = 0; p < img.channels(); p++) {
 
                     calcHist(&img_planes[p], 1, 0, mask, tmp_hist, 1, &histogram_bins_size, &histogram_ranges);
