@@ -90,6 +90,7 @@ int main(int argc, char **argv) {
 
     std::vector<Rect> rects;
     gs->process(rects);
+    std::cout << "候选区域：" << rects.size() << std::endl;
 
     int nb_rects = 10;
 
