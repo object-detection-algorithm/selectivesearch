@@ -23,4 +23,4 @@
 
 ## 相关
 
-* [选择性搜索算法小结](https://www.zhujian.tech/posts/58ff6dae.html)
+* [选择性搜索算法小结](https://blog.zhujian.life/posts/58ff6dae.html)
