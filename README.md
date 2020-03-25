@@ -14,6 +14,7 @@
 - [安装](#安装)
 - [用法](#用法)
 - [主要维护人员](#主要维护人员)
+- [致谢](#致谢)
 - [参与贡献方式](#参与贡献方式)
 - [许可证](#许可证)
 
@@ -79,6 +80,19 @@ $ ./selectivesearch ../../imgs/000262.jpg q
 ## 主要维护人员
 
 * zhujian - *Initial work* - [zjZSTU](https://github.com/zjZSTU)
+
+## 致谢
+
+```
+@article{UijlingsSelective,
+  title={Selective Search for Object Recognition},
+  author={Uijlings, J. R. R. and K. E. A. van de Sande…},
+  journal={International Journal of Computer Vision},
+  volume={104},
+  number={2},
+  pages={154-171},
+}
+```
 
 ## 参与贡献方式
 
