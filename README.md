@@ -83,6 +83,8 @@ $ ./selectivesearch ../../imgs/000262.jpg q
 
 ## 致谢
 
+### 引用
+
 ```
 @article{UijlingsSelective,
   title={Selective Search for Object Recognition},
