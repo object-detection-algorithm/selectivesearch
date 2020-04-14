@@ -26,10 +26,8 @@
 
 ### 本地编译文档
 
-需要预先安装以下工具：
-
 ```
-$ pip install mkdocs
+$ pip install -r requirements.txt
 ```
 
 ### 本地编译程序
