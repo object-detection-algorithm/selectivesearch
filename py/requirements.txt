@@ -5,7 +5,7 @@
 opencv-contrib-python == 4.2.0.32
 
 # py/selectivesearchsegmentation_demo.py: 15
-opencv-contrib-python-headless == 4.2.0.32
+opencv-contrib-python-headless == 4.8.1.78
 
 # py/selectivesearchsegmentation_demo.py: 15
 opencv-python == 4.2.0.32
